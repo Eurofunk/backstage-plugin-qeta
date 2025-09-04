@@ -492,5 +492,58 @@ describe.each(databases.eachSupportedId())(
         expect(found?.posts).toEqual([]);
       });
     });
+
+    describe('link feature', () => {
+      it('should store url in url field for link posts', async () => {
+        const url = 'https://example.com';
+        const linkPost = await storage.createPost({
+          user_ref: 'user',
+          title: 'A link post',
+          content: 'This is a link post',
+          created: new Date(),
+          type: 'link',
+          url,
+        });
+        expect(linkPost).toBeDefined();
+        expect(linkPost.type).toBe('link');
+        expect(linkPost.url).toBe(url);
+        expect(linkPost.content).not.toContain(url);
+      });
+
+      it('should update url field for link posts', async () => {
+        const url1 = 'https://first.com';
+        const url2 = 'https://second.com';
+        const linkPost = await storage.createPost({
+          user_ref: 'user',
+          title: 'A link post',
+          content: 'Initial content',
+          created: new Date(),
+          type: 'link',
+          url: url1,
+        });
+        const updated = await storage.updatePost({
+          id: linkPost.id,
+          user_ref: 'user',
+          url: url2,
+        });
+        expect(updated).toBeDefined();
+        expect(updated?.type).toBe('link');
+        expect(updated?.url).toBe(url2);
+        expect(updated?.content).toBe('Initial content');
+      });
+
+      it('should not set url for non-link posts unless provided', async () => {
+        const nonLinkPost = await storage.createPost({
+          user_ref: 'user',
+          title: 'Normal post',
+          content: 'Some content',
+          created: new Date(),
+          type: 'question',
+        });
+        expect(nonLinkPost).toBeDefined();
+        expect(nonLinkPost.type).toBe('question');
+        expect(nonLinkPost.url).toBeNull();
+      });
+    });
   },
 );
