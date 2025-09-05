@@ -1350,6 +1350,7 @@ export class DatabaseQetaStore implements QetaStore {
           this.mapToInteger(r.postVotes) + this.mapToInteger(r.answerVotes),
         totalArticles: this.mapToInteger(r.totalArticles),
         totalFollowers: this.mapToInteger(r.totalFollowers),
+        totalLinks: this.mapToInteger(r.totalLinks),
       })),
     };
   }
@@ -1373,6 +1374,7 @@ export class DatabaseQetaStore implements QetaStore {
         this.mapToInteger(rows[0].answerVotes),
       totalArticles: this.mapToInteger(rows[0].totalArticles),
       totalFollowers: this.mapToInteger(rows[0].totalFollowers),
+      totalLinks: this.mapToInteger(rows[0].totalLinks),
     };
   }
 
@@ -1943,6 +1945,7 @@ export class DatabaseQetaStore implements QetaStore {
           (await this.getCount('post_votes')) +
           (await this.getCount('answer_votes')),
         totalArticles: await this.getCount('posts', { type: 'article' }),
+        totalLinks: await this.getCount('posts', { type: 'link' }),
         date,
       })
       .onConflict(['date'])

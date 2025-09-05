@@ -338,6 +338,7 @@ export interface UserResponse {
   totalComments: number;
   totalVotes: number;
   totalArticles: number;
+  totalLinks: number;
 }
 
 export interface UsersResponse {

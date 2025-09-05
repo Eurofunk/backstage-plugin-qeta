@@ -97,6 +97,7 @@ export interface UserResponse {
   totalVotes: number;
   totalArticles: number;
   totalFollowers: number;
+  totalLinks: number;
 }
 
 export interface UsersResponse {
