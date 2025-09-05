@@ -274,6 +274,7 @@ export interface PostRequest {
   entities?: string[];
   images?: number[];
   headerImage?: string;
+  url?: string;
   type: PostType;
   status?: PostStatus;
 }

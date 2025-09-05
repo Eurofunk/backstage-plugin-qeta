@@ -15,6 +15,7 @@ import {
   collectionEditRouteRef,
   collectionRouteRef,
   collectionsRouteRef,
+  createLinkRouteRef,
   editArticleRouteRef,
   editQuestionRouteRef,
   entitiesRouteRef,
@@ -22,6 +23,7 @@ import {
   favoriteQuestionsRouteRef,
   LeftMenu,
   LeftMenuButton,
+  linksRouteRef,
   moderatorRouteRef,
   questionRouteRef,
   questionsRouteRef,
@@ -44,6 +46,7 @@ import { EntityPage } from '../EntityPage/EntityPage';
 import { UsersPage } from '../UsersPage/UsersPage';
 import { ModeratorPage } from '../ModeratorPage/ModeratorPage';
 import { Box, Container, Grid } from '@material-ui/core';
+import { CreateLinkPage } from "../CreateLinkPage/CreateLinkPage.tsx";
 
 type Props = {
   title?: string;
@@ -109,6 +112,11 @@ export const QetaPage = (props?: Props) => {
                   element={<ArticlesPage />}
                 />
                 <Route path={writeRouteRef.path} element={<WritePage />} />
+                <Route
+                  path={linksRouteRef.path}
+                  element={<ArticlesPage />} // TODO: Create LinksPage
+                />
+                <Route path={createLinkRouteRef.path} element={<CreateLinkPage />} />
                 <Route
                   path={favoriteQuestionsRouteRef.path}
                   element={<FavoritePage />}
