@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { useCallback, useEffect, useState, ReactNode } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
@@ -384,6 +384,11 @@ export const PostForm = (props: PostFormProps) => {
     setValue('title', e.target.value, { shouldValidate: true });
   };
 
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleCharCount(e.target.value.length);
+    setValue('url', e.target.value, { shouldValidate: true });
+  };
+
   const autoSavePost = useCallback(() => {
     if (autoSaveEnabled && edited && isValid && !posting) {
       const formData = getFormValues();
@@ -479,22 +484,22 @@ export const PostForm = (props: PostFormProps) => {
             className="qetaAskFormTitle"
             required
             fullWidth
-            error={'title' in errors}
+            error={'url' in errors} // make use of this when url is invalid
             margin="normal"
             variant="outlined"
-            name="title"
+            name="url"
             helperText={
               <span>
-              {t('postForm.urlInput.helperText', { type })}{' '}
+                {t('postForm.urlInput.helperText')}
                 <span style={{ float: 'right' }}>{titleCharCount}/255</span>
-            </span>
+              </span>
             }
             placeholder={t('postForm.urlInput.placeholder')}
             FormHelperTextProps={{
               style: { marginLeft: '0.2em' },
             }}
-            value={control._formValues.title}
-            onChange={handleTitleChange}
+            value={control._formValues.url}
+            onChange={handleUrlChange}
             inputProps={{ maxLength: 255 }}
           />
         </Box>
