@@ -1172,13 +1172,19 @@ export const postsRoutes = (router: Router, options: RouteOptions) => {
         .then(dirty =>
           sanitizeHtml(dirty, {
             allowedTags: ['title', 'meta'],
-            allowedAttributes: { meta: ['name', 'content'] },
+            allowedAttributes: { meta: ['property', 'content', 'name'] },
           }),
         );
 
       const $ = cheerio.load(html);
-      const title = $('title').text() || '';
-      const content = $('meta[name="description"]').attr('content') || '';
+      const title =
+        $('meta[property="og:title"]').attr('content') ||
+        $('title').text() ||
+        '';
+      const content =
+        $('meta[property="og:description"]').attr('content') ||
+        $('meta[name="description"]').attr('content') ||
+        '';
 
       response.json({
         title,
