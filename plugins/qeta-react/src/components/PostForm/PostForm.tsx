@@ -420,6 +420,14 @@ export const PostForm = (props: PostFormProps) => {
         if (control._formValues.content === '') {
           setValue('content', response.content ?? '', { shouldValidate: true });
         }
+
+        if (response.previewImageURL) {
+          setValue('headerImage', response.previewImageURL, {
+            shouldValidate: true,
+          });
+        } else {
+          setValue('headerImage', undefined, { shouldValidate: true });
+        }
       });
     },
     400,
@@ -515,53 +523,64 @@ export const PostForm = (props: PostFormProps) => {
         />
       )}
       {isLink && (
-        <Box mb={2} display="flex" alignItems="center" style={{ gap: 8 }}>
-          {favicon && (
-            <img
-              src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(
-                urlToCheck,
-              )}&sz=16`}
-              alt="Favicon"
-              style={{
-                width: 16,
-                height: 16,
-                marginRight: 4,
-                marginBottom: 16,
-              }}
-              onError={e => (e.currentTarget.style.display = 'none')}
-            />
+        <Box mb={2} display="flex" style={{ gap: 8, flexDirection: 'column' }}>
+          {control._formValues.headerImage && (
+            <Box mb={1} display="flex" justifyContent="center">
+              <img
+                src={control._formValues.headerImage ?? ''}
+                width={100}
+                alt="header"
+              />
+            </Box>
           )}
-          <Controller
-            name="url"
-            control={control}
-            rules={{
-              required: true,
-              validate: validateUrl,
-            }}
-            render={() => (
-              <TextField
-                label={t('postForm.urlInput.label')}
-                className="qetaAskFormTitle"
-                required
-                fullWidth
-                error={!!errors.url}
-                margin="normal"
-                variant="outlined"
-                name="url"
-                helperText={
-                  errors.url?.message || (
-                    <span>{t('postForm.urlInput.helperText')}</span>
-                  )
-                }
-                placeholder={t('postForm.urlInput.placeholder')}
-                FormHelperTextProps={{
-                  style: { marginLeft: '0.2em' },
+          <Box display="flex" alignItems="center" style={{ gap: 8 }}>
+            {favicon && (
+              <img
+                src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(
+                  urlToCheck,
+                )}&sz=16`}
+                alt="Favicon"
+                style={{
+                  width: 16,
+                  height: 16,
+                  marginRight: 4,
+                  marginBottom: 16,
                 }}
-                value={control._formValues.url ?? ''}
-                onChange={handleUrlChange}
+                onError={e => (e.currentTarget.style.display = 'none')}
               />
             )}
-          />
+            <Controller
+              name="url"
+              control={control}
+              rules={{
+                required: true,
+                validate: validateUrl,
+              }}
+              render={() => (
+                <TextField
+                  label={t('postForm.urlInput.label')}
+                  className="qetaAskFormTitle"
+                  required
+                  fullWidth
+                  error={!!errors.url}
+                  margin="normal"
+                  variant="outlined"
+                  name="url"
+                  helperText={
+                    errors.url?.message || (
+                      <span>{t('postForm.urlInput.helperText')}</span>
+                    )
+                  }
+                  placeholder={t('postForm.urlInput.placeholder')}
+                  FormHelperTextProps={{
+                    style: { marginLeft: '0.2em' },
+                  }}
+                  value={control._formValues.url ?? ''}
+                  onChange={handleUrlChange}
+                />
+              )}
+            />
+          </Box>
         </Box>
       )}
       <Box mb={2}>

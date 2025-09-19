@@ -1185,10 +1185,17 @@ export const postsRoutes = (router: Router, options: RouteOptions) => {
         $('meta[property="og:description"]').attr('content') ||
         $('meta[name="description"]').attr('content') ||
         '';
+      const previewImageURL = $('meta[property="og:image"]').attr('content');
+      console.log('');
+      console.log(title);
+      console.log(content);
+      console.log(previewImageURL);
+      console.log('');
 
       response.json({
         title,
         content,
+        previewImageURL,
       });
     } catch (e) {
       console.error('Failed to fetch URL:', e);

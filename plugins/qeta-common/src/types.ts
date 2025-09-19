@@ -471,4 +471,5 @@ export interface URLMetadataRequest {
 export interface URLMetadataResponse {
   title?: string;
   content?: string;
+  previewImageURL?: string;
 }
