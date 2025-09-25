@@ -88,6 +88,10 @@ export const entityToJsonObject = (entity: QetaIdEntity) => {
   }
 };
 
+// favicons typically require > 3000 characters
+// 12 000 is a safe upper limit for larger favicons
+const MAX_FAVICON_LENGTH = 12_000;
+
 const urlToDataURl = async (
   url: string,
   response: Response,
@@ -137,7 +141,8 @@ const extractFavicon = async (
         signal: AbortSignal.timeout(3000),
       });
       if (response.ok) {
-        return urlToDataURl(url.toString(), response);
+        const dataURL = await urlToDataURl(url.toString(), response);
+        return dataURL.length > MAX_FAVICON_LENGTH ? undefined : dataURL;
       }
     } catch (e) {
       console.error('Failed to fetch favicon from url', faviconURL, e);

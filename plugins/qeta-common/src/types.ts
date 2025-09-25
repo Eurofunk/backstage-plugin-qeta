@@ -99,6 +99,7 @@ export interface Post extends PostAnswerEntity {
   type: PostType;
   headerImage?: string;
   url?: string;
+  favicon?: string;
   images?: number[];
   status: PostStatus;
 }
@@ -281,6 +282,7 @@ export interface PostRequest {
   images?: number[];
   headerImage?: string;
   url?: string;
+  favicon?: string;
   type: PostType;
   status?: PostStatus;
 }

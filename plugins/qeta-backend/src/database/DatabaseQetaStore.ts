@@ -93,6 +93,7 @@ export type RawPostEntity = {
   type: 'question' | 'article' | 'link';
   headerImage: string;
   url: string | null;
+  favicon: string | null;
 };
 
 export type RawCollectionEntity = {
@@ -577,6 +578,7 @@ export class DatabaseQetaStore implements QetaStore {
     type?: PostType;
     headerImage?: string;
     url?: string;
+    favicon?: string;
     status?: PostStatus;
     opts?: PostOptions;
   }): Promise<Post> {
@@ -592,6 +594,7 @@ export class DatabaseQetaStore implements QetaStore {
       type = 'question',
       headerImage,
       url,
+      favicon,
       opts,
       status = 'active',
     } = options;
@@ -606,6 +609,7 @@ export class DatabaseQetaStore implements QetaStore {
           type: type ?? 'question',
           headerImage,
           url,
+          favicon,
           status,
         },
         ['id'],
@@ -621,6 +625,7 @@ export class DatabaseQetaStore implements QetaStore {
         'type',
         'status',
         'url',
+        'favicon',
       ]);
 
     await Promise.all([
@@ -751,6 +756,7 @@ export class DatabaseQetaStore implements QetaStore {
     images?: number[];
     headerImage?: string;
     url?: string;
+    favicon?: string;
     setUpdatedBy?: boolean;
     status?: PostStatus;
     opts?: PostOptions;
@@ -765,6 +771,7 @@ export class DatabaseQetaStore implements QetaStore {
       images,
       headerImage,
       url,
+      favicon,
       setUpdatedBy = true,
       opts,
       status = 'active',
@@ -775,6 +782,7 @@ export class DatabaseQetaStore implements QetaStore {
       content,
       headerImage,
       url,
+      favicon,
       updatedBy: setUpdatedBy ? user_ref : undefined,
       updated: setUpdatedBy ? new Date() : undefined,
       status,
@@ -2801,6 +2809,7 @@ export class DatabaseQetaStore implements QetaStore {
       type: val.type,
       headerImage: val.headerImage,
       url: val.url ?? undefined,
+      favicon: val.favicon ?? undefined,
       images: additionalInfo[5]?.map(r => r.id),
       experts: additionalInfo[6],
     };

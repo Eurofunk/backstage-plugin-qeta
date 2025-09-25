@@ -71,6 +71,7 @@ export interface PostContent {
   created?: string;
   headerImage?: string;
   url?: string;
+  favicon?: string;
   anonymous?: boolean;
   type: PostType;
   status?: PostStatus;
@@ -294,6 +295,7 @@ export const PostSchema: JSONSchemaType<PostContent> = {
     headerImage: { type: 'string', nullable: true },
     url: { type: 'string', nullable: true },
     type: { type: 'string', enum: ['question', 'article', 'link'] },
+    favicon: { type: 'string', nullable: true },
     status: {
       type: 'string',
       enum: ['active', 'draft', 'deleted'],

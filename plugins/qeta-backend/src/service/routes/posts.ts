@@ -591,6 +591,7 @@ export const postsRoutes = (router: Router, options: RouteOptions) => {
       type: request.body.type,
       headerImage: request.body.headerImage,
       url: request.body.url,
+      favicon: request.body.favicon,
       status: request.body.status || 'active',
       opts: {
         includeComments: false,
@@ -700,6 +701,7 @@ export const postsRoutes = (router: Router, options: RouteOptions) => {
       images: request.body.images,
       headerImage: request.body.headerImage,
       url: request.body.url,
+      favicon: request.body.favicon,
       status: request.body.status || 'active',
       setUpdatedBy: originalPost.status !== 'draft',
       opts: { tagsFilter, commentsFilter, answersFilter },

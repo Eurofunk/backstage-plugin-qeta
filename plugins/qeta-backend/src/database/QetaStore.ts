@@ -213,6 +213,7 @@ export interface QetaStore {
     type?: PostType;
     headerImage?: string;
     url?: string;
+    favicon?: string;
     status?: PostStatus;
     opts?: PostOptions;
   }): Promise<Post>;
@@ -260,6 +261,7 @@ export interface QetaStore {
     images?: number[];
     headerImage?: string;
     url?: string;
+    favicon?: string;
     setUpdatedBy?: boolean;
     status?: PostStatus;
     opts?: PostOptions;
