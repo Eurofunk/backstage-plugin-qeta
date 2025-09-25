@@ -126,6 +126,7 @@ const getValues = async (
     type,
     headerImage: post.headerImage,
     url: post.url,
+    favicon: post.favicon,
     images: post.images ?? [],
     status: post.status,
   };
@@ -155,7 +156,6 @@ export const PostForm = (props: PostFormProps) => {
   const [searchParams, _setSearchParams] = useSearchParams();
   const [urlToCheck, setUrlToCheck] = useState('');
   const validUrl = /^https?:\/\/\S+$/;
-  const [favicon, setFavicon] = useState<boolean>(false);
   const { t } = useTranslationRef(qetaTranslationRef);
 
   const qetaApi = useApi(qetaApiRef);
@@ -386,16 +386,17 @@ export const PostForm = (props: PostFormProps) => {
   };
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFavicon(false);
+    setValue('favicon', undefined);
+    setValue('headerImage', undefined, { shouldValidate: true });
     setValue('url', e.target.value, { shouldValidate: true });
   };
 
   const validateUrl = (value?: string) => {
     if (value === '') {
-      setFavicon(false);
+      setValue('favicon', undefined);
       return false;
     } else if (!value || !validUrl.test(value)) {
-      setFavicon(false);
+      setValue('favicon', undefined);
       return t('postForm.urlInput.invalid');
     }
 
@@ -411,8 +412,6 @@ export const PostForm = (props: PostFormProps) => {
 
       // some valid urls are not reachable => no error checking
       qetaApi.fetchURLMetadata({ url: urlToCheck }).then(response => {
-        setFavicon(true);
-
         if (response.title) {
           setValue('title', response.title, { shouldValidate: true });
         }
@@ -423,6 +422,10 @@ export const PostForm = (props: PostFormProps) => {
 
         if (response.image) {
           setValue('headerImage', response.image, { shouldValidate: true });
+        }
+
+        if (response.favicon) {
+          setValue('favicon', response.favicon);
         }
       });
     },
@@ -520,11 +523,9 @@ export const PostForm = (props: PostFormProps) => {
       )}
       {isLink && (
         <Box mb={2} display="flex" alignItems="center" style={{ gap: 8 }}>
-          {favicon && (
+          {control._formValues.favicon && (
             <img
-              src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(
-                urlToCheck,
-              )}&sz=16`}
+              src={control._formValues.favicon}
               alt="Favicon"
               style={{
                 width: 16,

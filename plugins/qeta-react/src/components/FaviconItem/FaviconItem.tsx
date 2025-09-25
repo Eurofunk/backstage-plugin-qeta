@@ -8,7 +8,7 @@ export const FaviconItem = (props: { entity: PostResponse }) => {
   const { entity } = props;
   const { url } = entity;
   const qetaApi = useApi(qetaApiRef);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(!entity.favicon);
 
   return (
     <a
@@ -23,9 +23,7 @@ export const FaviconItem = (props: { entity: PostResponse }) => {
     >
       {!error && (
         <img
-          src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(
-            url ?? '',
-          )}&sz=16`}
+          src={entity.favicon}
           alt={url}
           width={16}
           height={16}
