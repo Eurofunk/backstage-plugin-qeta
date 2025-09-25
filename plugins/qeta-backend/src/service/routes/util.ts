@@ -93,13 +93,13 @@ export const entityToJsonObject = (entity: QetaIdEntity) => {
 const MAX_FAVICON_LENGTH = 12_000;
 
 const urlToDataURl = async (
-  url: string,
+  faviconURL: string,
   response: Response,
 ): Promise<string> => {
   const buffer = await response.arrayBuffer();
   const contentType =
     response.headers.get('content-type') ||
-    lookup(url) ||
+    lookup(faviconURL) ||
     'application/octet-stream';
 
   const encoded = btoa(
@@ -130,18 +130,20 @@ const extractFavicon = async (
     $('link[rel="mask-icon"]').attr('href');
 
   const faviconURLs = [
-    unrelativeURL(favicon ?? 'PLACEHOLDER', url),
+    favicon ? unrelativeURL(favicon, url) : undefined,
     `${url.origin}/favicon.ico`, // common location, used as fallback
     `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=16`, // google service as fallback
   ];
 
   for (const faviconURL of faviconURLs) {
+    if (!faviconURL) continue;
+
     try {
       const response = await fetch(faviconURL, {
         signal: AbortSignal.timeout(3000),
       });
       if (response.ok) {
-        const dataURL = await urlToDataURl(url.toString(), response);
+        const dataURL = await urlToDataURl(faviconURL, response);
         return dataURL.length > MAX_FAVICON_LENGTH ? undefined : dataURL;
       }
     } catch (e) {
